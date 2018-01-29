@@ -3,7 +3,7 @@ function Fig=plotLateralDeviation(Ses,ax)
 
 NTrial=1:Ses.LinkedTask.NTrials;
 % C1=[0, 114,189]./255;
-% C2=[189, 75, 0]./255;
+C2=[189, 75, 0]./255;
 % C3=[0, 181, 26]./255;
 if nargin<2
     figure('Color',[1 1 1]);

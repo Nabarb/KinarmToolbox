@@ -6,8 +6,7 @@ They are intended to be used on reaching data.
 
 # Usage
 ## Getting Started
-Rename all the folders by putting a @ in front of them (__Experiment__ becomes __@Experiment__).
-Afterwards don't forget to add them to the matlab path.
+
 
 ## Class hierarchy and properties description
 

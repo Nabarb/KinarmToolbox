@@ -81,9 +81,7 @@ classdef Task < handle
                 end
                 Tsk.TrialProtocolTable =array2table(Table,'VariableNames',FieldName);
                 
-                %% Trials description structure
-                Tsk.TrialsType=struct2table(c3d(1).TrialsType);
-                            
+                
                 
                 %% Block Table
                 FieldName=fieldnames(c3d(1).BLOCK_TABLE);
@@ -156,9 +154,12 @@ classdef Task < handle
                 
                 %% Events Definition
                 Tsk.EventsDefinitions=deblank(c3d(1).EVENT_DEFINITIONS.LABELS);
-                
                 %%
                 Tsk.ErrorLims=[0 0];
+                
+                %% Trials description structure
+                Tsk.TrialsType=struct2table(c3d(1).TrialsType);
+                Tsk.TrialsType.IsCatchTrial=all(ismember(cat(1,Tsk.TrialsType.IndexList{:}),unique(cat(2,Tsk.BlockTable.CATCH_TP_LIST{:}))),2);
             end
         end % Task
         
