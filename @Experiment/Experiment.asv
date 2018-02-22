@@ -66,11 +66,9 @@ classdef Experiment < handle
         end %addSubject
         
         function IDs=getTaskList(Exp)
-            
-            if ~isempty(Exp.Tasks)
-                IDs=cat(1,Exp.Tasks.ID);
-            else
-                IDs=[];
+            IDs=[];
+            if ~isempty
+                IDs(i)=cat(1,Exp.Tasks.ID);
             end
         end %getTaskList
         

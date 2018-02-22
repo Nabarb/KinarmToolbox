@@ -2,7 +2,7 @@ classdef Session < handle
     %% Session class
     properties
         IntrestingData
-        c3d
+        %c3d
         LinkedTask
         LinkedSubject
         PausesIndex
@@ -17,7 +17,7 @@ classdef Session < handle
             
             activeArm=lower(c3d(1).EXPERIMENT.ACTIVE_ARM);
             Ses.Hand=[upper(activeArm(1)) activeArm(2:end)];
-            Ses.c3d=c3d;
+%             Ses.c3d=c3d;
             Ses.LinkedTask=task;
             Ses.LinkedSubject=sub;
             Ses.LateralDeviation=[];
@@ -48,6 +48,7 @@ classdef Session < handle
                 [ Ses.Hand '_FS_TorqueZ']
                 [ Ses.Hand '_FS_TimeStamp']
                 'EVENTS'
+                'TRIAL'
                 };
             
             for j=1:length(c3d)
@@ -109,7 +110,7 @@ classdef Session < handle
                 ind=1:Ses.LinkedTask.NTrials;
             end
             
-            TrialsInfo=cat(1,Ses.c3d.TRIAL);
+            TrialsInfo=cat(1,Ses.IntrestingData.TRIAL);
             TP=cat(1,TrialsInfo.TP);
             TP=TP(ind);
         end %getTP

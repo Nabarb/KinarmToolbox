@@ -1,16 +1,30 @@
-function [T,S,L]=getEventTime(Ses,EventName,ind)
+function [T,S,L]=getEventTime(Ses,varargin)
 %% Session class method. Return the times and correspondoing samples nuber of the
+    
 
-    if nargin<3
+switch nargin
+    case 3
+        NumInd = cellfun(@(x) isnumeric(x), varargin); % finds numeric entry in varargin
+        StrInd = cellfun(@(x) ischar(x), varargin); % finds string entry in varargin
+        ind=varargin{NumInd};
+        EventName=varargin{StrInd};
+    case 2
+        if isnumeric(varargin)
+            ind=varargin{1};
+        elseif any(ismember(varargin{1},Ses.LinkedTask.EventsDefinitions))
+            ind='all';
+            EventName=varargin{1};
+        else
+            ind='all';
+            EventName=Ses.LinkedTask.EventsDefinitions;
+        end
+    case 1
         ind='all';
-    end
-
+        EventName=Ses.LinkedTask.EventsDefinitions;
+end
+    
     if ~isnumeric(ind) && strcmp(ind,'all')
         ind=1:Ses.LinkedTask.NTrials;
-    end
-    
-    if nargin<2
-        EventName=Ses.LinkedTask.EventsDefinitions;
     end
     
     if ~iscell(EventName)
