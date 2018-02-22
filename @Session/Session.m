@@ -190,7 +190,7 @@ classdef Session < handle
             end
         end %getMovement
         
-        [T,S]=getEventTime(Ses,EventName,ind)
+        [T,S,L]=getEventTime(Ses,EventName,ind)
         
         [lat_devCOMPLETE,lat_devFF,lat_dev_orderedCOMPLETE,lat_dev_ordered] =...
             getLateralDeviation(Ses,ind)
@@ -198,10 +198,16 @@ classdef Session < handle
         plotTrial(Ses,varargin)
         
         PlotTargetAnimation(Ses)
+        
         [CenterOutIndex,OutCenterIndex,Traj]=getMovementIndexes(Ses,ind)
         
         plotLateralDeviation(Ses,ax)
+        
+        Ax=plotPerTrialData(Ses,varargin)
+
+        
         G=ForceDistribution(Ses,ind)
+        
         function plotErrorForceScatter(Ses,ind)
             
             if nargin<2

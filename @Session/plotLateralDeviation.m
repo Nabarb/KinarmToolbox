@@ -1,39 +1,17 @@
 function Fig=plotLateralDeviation(Ses,ax)
 [a,b,c,d]=Ses.getLateralDeviation;
 
-NTrial=1:Ses.LinkedTask.NTrials;
-% C1=[0, 114,189]./255;
-C2=[189, 75, 0]./255;
-% C3=[0, 181, 26]./255;
 if nargin<2
     figure('Color',[1 1 1]);
     ax=gca;
     pbaspect(ax,[3,2,1])
-
 end
-hold(ax,'on');
-plot(ax,NTrial,zeros(size(a)),'--','Color',C2,'LineWidth',.3);
-BlockIndex=Ses.LinkedTask.ChangeBlockIndex;
 
-for k=1:1:length(BlockIndex)-1
-    for i=1:size(Ses.LinkedTask.TrialsType,1)
-        index=(BlockIndex(k)+1):BlockIndex(k+1);
-        TPList=Ses.getTP(index);
-        index=index(ismember(TPList,Ses.LinkedTask.TrialsType.IndexList{i}));
-        if all(ismember(Ses.LinkedTask.TrialsType.IndexList{i},Ses.LinkedTask.BlockTable.CATCH_TP_LIST{2}))
-            LineType='*';
-        else
-            LineType='';
-        end
-        color= Ses.LinkedTask.TrialsType.Color{i};
-        plot(ax,NTrial(index),a(index),LineType,'LineWidth',1.5,'Color',color);
-    end
-end
+ax=plotPerTrialData(Ses,ax,a,0);
+
 ylim(ax,Ses.LinkedTask.ErrorLims)
 xlabel(ax,'# Trials')
 ylabel(ax,'Mean error [m]')
-box(ax,'off');
-hold(ax, 'off');
 title(ax,['Subject ID:' num2str(Ses.LinkedSubject.ID)]);
 
 if nargout==1

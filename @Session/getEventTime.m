@@ -9,8 +9,9 @@ switch nargin
         ind=varargin{NumInd};
         EventName=varargin{StrInd};
     case 2
-        if isnumeric(varargin)
+        if isnumeric(varargin{1})
             ind=varargin{1};
+            EventName=Ses.LinkedTask.EventsDefinitions;
         elseif any(ismember(varargin{1},Ses.LinkedTask.EventsDefinitions))
             ind='all';
             EventName=varargin{1};
