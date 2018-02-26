@@ -202,10 +202,7 @@ classdef Session < handle
         [CenterOutIndex,OutCenterIndex,Traj]=getMovementIndexes(Ses,ind)
         
         plotLateralDeviation(Ses,ax)
-        
-        Ax=plotPerTrialData(Ses,varargin)
-
-        
+                
         G=ForceDistribution(Ses,ind)
         
         function plotErrorForceScatter(Ses,ind)

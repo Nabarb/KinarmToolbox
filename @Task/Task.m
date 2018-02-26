@@ -165,6 +165,7 @@ classdef Task < handle
         
         ParseBlockList(Tsk)
         
+        Ax=plotPerTrialData(Tsk,varargin)
         
         function Struc=saveobj(Tsk)
             FN=fieldnames(Tsk);

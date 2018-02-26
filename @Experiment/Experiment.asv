@@ -66,9 +66,11 @@ classdef Experiment < handle
         end %addSubject
         
         function IDs=getTaskList(Exp)
-            IDs=[];
-            if ~isempty
-                IDs(i)=cat(1,Exp.Tasks.ID);
+            
+            if ~isempty(Exp.Tasks)
+                IDs=cat(1,Exp.Tasks.ID);
+            else
+                IDs=[];
             end
         end %getTaskList
         
@@ -133,8 +135,8 @@ classdef Experiment < handle
                 ax=axes;
                 pbaspect(ax,[3,2,1])
                 a=LatDev{j};
-                hold(ax, 'on');
-                plot(ax,NTrial{j},zeros(size(a)),'--','Color',C2,'LineWidth',.3);
+                                
+                ax=plotPerTrialData(Ses,ax,a,0);
                 
                 for k=1:1:length(BlockIndex{j})-1
                     for i=1:size(Exp.Tasks(j).TrialsType,1)

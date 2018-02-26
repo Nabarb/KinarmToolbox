@@ -135,27 +135,27 @@ classdef Experiment < handle
                 ax=axes;
                 pbaspect(ax,[3,2,1])
                 a=LatDev{j};
-                hold(ax, 'on');
-                plot(ax,NTrial{j},zeros(size(a)),'--','Color',C2,'LineWidth',.3);
+                                
+                ax=plotPerTrialData(Exp.Tasks,ax,a,0);
                 
-                for k=1:1:length(BlockIndex{j})-1
-                    for i=1:size(Exp.Tasks(j).TrialsType,1)
-                        index=(BlockIndex{j}(k)+1):BlockIndex{j}(k+1);
-                        TPList=Exp.Subjects(1).Sessions.getTP(index);
-                        index=index(ismember(TPList,Exp.Tasks(j).TrialsType.IndexList{i}));
-                        if all(ismember(Exp.Tasks(j).TrialsType.IndexList{i},Exp.Tasks(j).BlockTable.CATCH_TP_LIST{2}))
-                            LineType='*';
-                        else
-                            LineType='';
-                        end
-                        plot(ax,NTrial{j}(index),a(index),LineType,'LineWidth',1.5);
-                    end
-                end
+%                 for k=1:1:length(BlockIndex{j})-1
+%                     for i=1:size(Exp.Tasks(j).TrialsType,1)
+%                         index=(BlockIndex{j}(k)+1):BlockIndex{j}(k+1);
+%                         TPList=Exp.Subjects(1).Sessions.getTP(index);
+%                         index=index(ismember(TPList,Exp.Tasks(j).TrialsType.IndexList{i}));
+%                         if all(ismember(Exp.Tasks(j).TrialsType.IndexList{i},Exp.Tasks(j).BlockTable.CATCH_TP_LIST{2}))
+%                             LineType='*';
+%                         else
+%                             LineType='';
+%                         end
+%                         plot(ax,NTrial{j}(index),a(index),LineType,'LineWidth',1.5);
+%                     end
+%                 end
                 ylim(ax,Exp.Tasks(j).ErrorLims)
                 xlabel(ax,'# Trials')
                 ylabel(ax,'Mean error [m]')
-                box(ax,'off');
-                hold(ax, 'off');
+%                 box(ax,'off');
+%                 hold(ax, 'off');
                 title('Across subjects lateral deviation')
                 
             end %j
