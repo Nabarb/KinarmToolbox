@@ -10,8 +10,8 @@ AnimationPaused=true;
 global StartTrial;
 global ButtonPressed;
 
-NTrials=length(Ses.c3d);
-Fs= Ses.c3d(1).HAND.RATE;
+NTrials=Ses.LinkedTask.NTrials;
+Fs= Ses.LinkedTask.Fs;
 
 % Initializing figure
 scrsz = get(groot,'ScreenSize');
@@ -48,28 +48,28 @@ uicontrol('style','text','units','normalized',...
 scalefactor=100;
 i=1;
     LabelH.String=num2str(i);
-    TP=Ses.c3d(i).TRIAL.TP;   % Current trial protocol
+    TP=Ses.getTP(i);   % Current trial protocol
     
-    cursorpos=[Ses.c3d(i).Right_HandX, Ses.c3d(i).Right_HandY]'.*scalefactor;
+    cursorpos=[Ses.IntrestingData(i).Right_HandX, Ses.IntrestingData(i).Right_HandY]'.*scalefactor;
     
     %%
     %     T=1/Fs;
     fps=60;         % glorious PC master race
     hold(AX,'off')
     k=1;
-    fx=Ses.c3d(i).Right_Hand_ForceCMD_X./2;
-    fy=Ses.c3d(i).Right_Hand_ForceCMD_Y./2;
+    fx=Ses.IntrestingData(i).Right_Hand_ForceCMD_X./2;
+    fy=Ses.IntrestingData(i).Right_Hand_ForceCMD_Y./2;
 
-        Targets_Struc=Ses.c3d(i).TARGET_TABLE;
-        Ntargets = Targets_Struc.USED;
+        Targets_Tbl=Ses.LinkedTask.TargetTable;
+        Ntargets = size(Targets_Tbl,1);
         for j=1:Ntargets
-            colr=num2str(Targets_Struc.Initial_Color(j));
+            colr=num2str(Targets_Tbl.Initial_Color(j));
             if(strcmp(colr,'0')),continue; end
             
             % Targets color
             colr=str2num([colr(1:3),' ',colr(4:6),' ',colr(7:9)])./255;
-            Targets(j)=plot(AX,Targets_Struc.X_GLOBAL(j)./1,...
-                Targets_Struc.Y_GLOBAL(j)./1,...
+            Targets(j)=plot(AX,Targets_Tbl.X_GLOBAL(j)./1,...
+                Targets_Tbl.Y_GLOBAL(j)./1,...
                 '.','MarkerSize',140,'Color',colr);
             
             hold(AX,'on')
@@ -100,17 +100,16 @@ ButtonPressed=false;
 i=StartTrial;
 while i<NTrials
     LabelH.String=num2str(i);
-    TP=Ses.c3d(i).TRIAL.TP;   % Current trial protocol
-    
-    cursorpos=[Ses.c3d(i).Right_HandX, Ses.c3d(i).Right_HandY]'.*scalefactor;
+    TP=Ses.getTP(i);   % Current trial protocol    
+    cursorpos=[Ses.IntrestingData(i).Right_HandX, Ses.IntrestingData(i).Right_HandY]'.*scalefactor;
     
     %%
     %     T=1/Fs;
     fps=60;         % glorious PC master race
     hold(AX,'off')
     k=1;
-    fx=Ses.c3d(i).Right_Hand_ForceCMD_X./2;
-    fy=Ses.c3d(i).Right_Hand_ForceCMD_Y./2;
+    fx=Ses.IntrestingData(i).Right_Hand_ForceCMD_X./2;
+    fy=Ses.IntrestingData(i).Right_Hand_ForceCMD_Y./2;
     
 %     if i==1         % first run, plots all the objects
 %         Targets_Struc=Ses.c3d(i).TARGET_TABLE;
@@ -148,15 +147,9 @@ while i<NTrials
 %     end
     
     % Only the active target has to be visible
-    StartTarget=Ses.c3d(i).TP_TABLE.Start_Target(TP);
-    if isfield(Ses.c3d(i).TP_TABLE,'End_Target')
-        EndTarget=Ses.c3d(i).TP_TABLE.End_Target(TP);
-    elseif isfield(Ses.c3d(i).TP_TABLE,'True_End_Target')
-        EndTarget=Ses.c3d(i).TP_TABLE.True_End_Target(TP);
-    end
+    Targets=Ses.getTargetsPerTrial(i);
     TargetState=mat2cell(char(ones(Ntargets,1)*'off'),ones(1,Ntargets),3);
-    TargetState{EndTarget}='on';
-    TargetState{StartTarget}='on';
+    TargetState(Targets)={'on'};
 
     
 %     for j=1:Ntargets

@@ -8,11 +8,16 @@ function plotTrial(Ses,varargin)
 %  'Trials',:           'all' or number, plots only trials specified in
 %                                       Trials
 %     
-
+ind='all';
+if ~ischar(varargin{1})
+    ind=varargin{1};
+    varargin(1)=[];
+elseif varargin{1}=='all'
+    varargin(1)=[];   
+    ind='all';
+end
 Props = struct('Block','all',...
-    'TP','all',...
-    'Trials','all'...
-    );
+    'TP','all');
 Props = getopt(Props,varargin{:});
 
 NTrials=Ses.LinkedTask.NTrials;
@@ -32,9 +37,9 @@ elseif strcmp(Props.TP,'all')
 
 end
 
-if isnumeric(Props.Trials)
-    TrialsIndex = ismember(1:NTrials,Props.Trials);
-elseif strcmp(Props.TP,'all')
+if isnumeric(ind)
+    TrialsIndex = ismember(1:NTrials,ind);
+elseif strcmp(ind,'all')
     TrialsIndex=ones(1,NTrials);
 
 end

@@ -38,13 +38,11 @@ end
         S=[];
         L=[];
         for EvName=EventName
-            t=Ses.IntrestingData(ind).EVENTS.TIMES(strcmp(deblank(Ses.IntrestingData(ind).EVENTS.LABELS),EvName{:}));
+            t=Ses.IntrestingData(ind).OriginalEVENTS.TIMES(strcmp(deblank(Ses.IntrestingData(ind).OriginalEVENTS.LABELS),EvName{:}));
             T = [T t];
+            S = [S round(T*Ses.LinkedTask.Fs)+1];
             L = [L repmat(EvName,1,length(t))];
         end
-        [T,I]=sort(T);
-        S = round(T*Ses.LinkedTask.Fs)+1;
-        L = L(I);
     else
 
     T=cell(1,length(ind));
@@ -54,7 +52,7 @@ end
     for i=1:length(ind)
         for EvName=EventName
 
-            t=Ses.IntrestingData(ind(i)).EVENTS.TIMES(strcmp(deblank(Ses.IntrestingData(ind(i)).EVENTS.LABELS),EvName{:}));
+            t=Ses.IntrestingData(ind(i)).OriginalEVENTS.TIMES(strcmp(deblank(Ses.IntrestingData(ind(i)).OriginalEVENTS.LABELS),EvName{:}));
             if ~isempty(t)
                 T{i} = [T{i} t];
                 L{i}=[L{i} repmat(EvName,1,length(t))];

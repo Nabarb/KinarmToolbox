@@ -61,6 +61,42 @@ classdef Session < handle
             Ses.LinkedTask.CatchIndex=Ses.isCatchTrial;
         end % Session
         
+        function [displ,pkdispl,pkind]=getDisplacement(Ses,ind)
+            %% Session methods for getting the speed profile
+            %  [speed,pkspeed,pkind]=getDisplacement(Ses,ind)
+            % returns the displacement(vector), the value and the index of
+            % peak displacement of the trials specified in ind.
+            % Default value for ind is 'all', in this case the computation 
+            % is done on all trials.
+            
+            if nargin<2
+                ind='all';
+            end
+            
+            
+            if ~isnumeric(ind) && strcmp(ind,'all')
+                ind=1:Ses.LinkedTask.NTrials;
+            end
+            if isscalar(ind)
+                displ = [Ses.IntrestingData(ind).Right_HandX Ses.IntrestingData(ind).Right_HandY];
+                displ=displ-displ(1,:);
+                displ = sqrt(sum(displ.^2,2));
+                [pkdispl,pkind]=max(displ);
+            else
+                displ=cell(1,length(ind));
+                pkdispl=zeros(1,length(ind));
+                pkind=pkdispl;
+                for j=ind
+                    displ{j} = sqrt(Ses.IntrestingData(j).Right_HandX.^2+ Ses.IntrestingData(j).Right_HandY.^2);
+                    [pkdispl(j),pkind(j)]=max(displ{j});
+                end
+            end
+            
+            
+            
+            
+        end %getDisplacement
+        
         function [speed,pkspeed,pkind]=getSpeed(Ses,ind)
             %% Session methods for getting the speed profile
             % [speed,pkspeed,pkind]=getSpeed(Ses,ind)
@@ -192,6 +228,8 @@ classdef Session < handle
         
         [T,S,L]=getEventTime(Ses,EventName,ind)
         
+        [T,S,L]=getOriginalEventTime(Ses,EventName,ind)
+        
         [lat_devCOMPLETE,lat_devFF,lat_dev_orderedCOMPLETE,lat_dev_ordered] =...
             getLateralDeviation(Ses,ind)
         
@@ -203,7 +241,7 @@ classdef Session < handle
         
         plotLateralDeviation(Ses,ax)
                 
-        G=ForceDistribution(Ses,ind)
+        G=ForceDistribution(Ses,ind,c3d)
         
         function plotErrorForceScatter(Ses,ind)
             
@@ -215,7 +253,7 @@ classdef Session < handle
             if ~isnumeric(ind) && strcmp(ind,'all')
                 ind=1:Ses.LinkedTask.NTrials;
             end
-            G=Ses.ForceDistribution(ind);
+            G=Ses.ForceDistribution(ind,c3d);
             [Err]=Ses.getLateralDeviation(ind);
             plot(Err,G,'*')
             ylabel('Viscosity')

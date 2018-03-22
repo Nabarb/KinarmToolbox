@@ -18,7 +18,9 @@ data(index)=[];
 
 mkdir([folder_name filesep 'RawKinarm'])
 movefile([folder_name filesep '*.zip'],[folder_name filesep 'RawKinarm'])
-movefile([folder_name filesep '*.training'],[folder_name filesep 'RawKinarm'])
+if exist([folder_name filesep '*.training'],'file')
+    movefile([folder_name filesep '*.training'],[folder_name filesep 'RawKinarm'])
+end
 DataPath=[strrep(folder_name,id,'') filesep 'KINanalysis' filesep id];
 if (~isdir(DataPath))
     mkdir(DataPath)

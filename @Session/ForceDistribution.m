@@ -1,4 +1,4 @@
-function varargout=ForceDistribution(Ses,ind)
+function varargout=ForceDistribution(Ses,ind,c3d)
 
 if nargin<2
     ind='all';
@@ -11,7 +11,7 @@ end
 G=zeros(1,length(ind));
 j=1;
 for i=ind
-    G(j)=mean(Ses.c3d(i).FX_from_VY(round(4*end/5)));
+    G(j)=mean(c3d(i).FX_from_VY(round(4*end/5)));
     j=j+1;
 end
 [Y,x]=hist(G);

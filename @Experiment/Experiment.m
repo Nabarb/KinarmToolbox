@@ -103,22 +103,32 @@ classdef Experiment < handle
             
         end %addData
         
+        function [LatDev]=getLateralDeviation(Exp)
+            LatDev=cell(1,numel(Exp.getTaskList));
+            Titles=LatDev;
+            for i=Exp.Subjects
+                for k=i.Sessions
+                    TaskIndex=ismember(Exp.getTaskList,k.LinkedTask.ID);
+                    [LatDevFull,~]=k.getLateralDeviation;
+                    if isempty(LatDev{TaskIndex})
+                        LatDev{TaskIndex}= LatDevFull*0;
+                    end
+                    LatDev{TaskIndex}= LatDev{TaskIndex} + LatDevFull./length(Exp.Subjects);
+                    Titles{TaskIndex}= k.LinkedTask.TaskProtocol;
+                    
+                end %k
+            end %i
+        end %getLateralDeviation
+        
         function plotLateralDeviation(Exp)
             
             %% get
             LatDev=cell(1,numel(Exp.getTaskList));
             Titles=LatDev;
-            NTrial=cell(1,length(Exp.Tasks));
-            BlockIndex=cell(1,length(Exp.Tasks));
-            CatchTrialIndex=cell(1,length(Exp.Tasks));
-            j=1;
             for i=Exp.Subjects
                 for k=i.Sessions
                     TaskIndex=ismember(Exp.getTaskList,k.LinkedTask.ID);
-                    NTrial{TaskIndex}=1:Exp.Tasks(TaskIndex).NTrials;
-                    BlockIndex{TaskIndex}=Exp.Tasks(TaskIndex).ChangeBlockIndex;
-                    CatchTrialIndex{TaskIndex}=Exp.Tasks(TaskIndex).CatchIndex;
-                    [LatDevFull,LatDevNonCatch]=k.getLateralDeviation;
+                    [LatDevFull,~]=k.getLateralDeviation;
                     if isempty(LatDev{TaskIndex})
                         LatDev{TaskIndex}= LatDevFull*0;
                     end
@@ -129,7 +139,6 @@ classdef Experiment < handle
             end %i
             
             %% plot
-            C2=[189, 75, 0]./255;
             for j=1:length(LatDev)
                 figure('Color',[1 1 1]);
                 ax=axes;
@@ -138,25 +147,10 @@ classdef Experiment < handle
                                 
                 ax=plotPerTrialData(Exp.Tasks,ax,a,0);
                 
-%                 for k=1:1:length(BlockIndex{j})-1
-%                     for i=1:size(Exp.Tasks(j).TrialsType,1)
-%                         index=(BlockIndex{j}(k)+1):BlockIndex{j}(k+1);
-%                         TPList=Exp.Subjects(1).Sessions.getTP(index);
-%                         index=index(ismember(TPList,Exp.Tasks(j).TrialsType.IndexList{i}));
-%                         if all(ismember(Exp.Tasks(j).TrialsType.IndexList{i},Exp.Tasks(j).BlockTable.CATCH_TP_LIST{2}))
-%                             LineType='*';
-%                         else
-%                             LineType='';
-%                         end
-%                         plot(ax,NTrial{j}(index),a(index),LineType,'LineWidth',1.5);
-%                     end
-%                 end
                 ylim(ax,Exp.Tasks(j).ErrorLims)
                 xlabel(ax,'# Trials')
                 ylabel(ax,'Mean error [m]')
-%                 box(ax,'off');
-%                 hold(ax, 'off');
-                title('Across subjects lateral deviation')
+                title(ax,'Across subjects lateral deviation')
                 
             end %j
             

@@ -49,9 +49,22 @@ classdef Task < handle
                 Tsk.ID=c3d(1).EXPERIMENT.TASK_PROTOCOL_CODE;
                 
                 %% Target Table
+%                 usedtarget=c3d(1).TARGET_TABLE.USED;
+%                 Tsk.TargetTable = [c3d(1).TARGET_TABLE.X_GLOBAL(1:usedtarget)...
+%                     c3d(1).TARGET_TABLE.Y_GLOBAL(1:usedtarget)];
+                
+                FieldName=fieldnames(c3d(1).TARGET_TABLE);
                 usedtarget=c3d(1).TARGET_TABLE.USED;
-                Tsk.TargetTable = [c3d(1).TARGET_TABLE.X_GLOBAL(1:usedtarget)...
-                    c3d(1).TARGET_TABLE.Y_GLOBAL(1:usedtarget)];
+                index=or(or(strcmp(FieldName,'COLUMN_ORDER'),...
+                    strcmp(FieldName,'DESCRIPTIONS')),...
+                    strcmp(FieldName,'USED'));
+                FieldName=FieldName(~index);
+                Table=zeros(usedtarget,length(FieldName));
+                for j=1:length(FieldName)
+                    tmp=c3d(1).TARGET_TABLE.(FieldName{j});
+                    Table(:,j) = tmp(1:usedtarget);
+                end
+                Tsk.TargetTable = array2table(Table,'VariableNames',FieldName);
                 
                 %% Loads Table
                 FieldName=fieldnames(c3d(1).LOAD_TABLE);
