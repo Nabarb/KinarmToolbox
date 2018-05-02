@@ -49,6 +49,7 @@ classdef Session < handle
                 [ Ses.Hand '_FS_TimeStamp']
                 'EVENTS'
                 'TRIAL'
+                'FX_from_VY'    % Application specific field, to be removed
                 };
             
             for j=1:length(c3d)
@@ -241,7 +242,7 @@ classdef Session < handle
         
         plotLateralDeviation(Ses,ax)
                 
-        G=ForceDistribution(Ses,ind,c3d)
+        G=ViscDistribution(Ses,ind,c3d)
         
         function plotErrorForceScatter(Ses,ind)
             

@@ -1,5 +1,5 @@
 %% Plot Targets Animation
-function PlotTargetAnimation(Ses)
+function PlotTargetAnimation(Ses,save)
 %% Plots kinarm data in animated way.
 % Takes as input directly the raw c3d data al loaded by kinarm scripts.
 
@@ -190,7 +190,10 @@ while i<NTrials
             ButtonPressed=false;
             break;
         end
-        
+        frame = getframe(h); 
+        im = frame2im(frame); 
+        [imind,cm] = rgb2ind(im,256); 
+        imwrite(imind,cm,filename,'gif','WriteMode','append'); 
     end
     i=i+1;
 end

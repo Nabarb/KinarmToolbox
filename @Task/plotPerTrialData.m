@@ -60,7 +60,7 @@ for k=1:1:length(BlockIndex)-1
         TPList=TPList(index);
         index=index(ismember(TPList,Tsk.TrialsType.IndexList{i}));
         if all(ismember(Tsk.TrialsType.IndexList{i},Tsk.BlockTable.CATCH_TP_LIST{2}))
-            LineType='*';
+            LineType='-*';
         else
             LineType='';
         end
