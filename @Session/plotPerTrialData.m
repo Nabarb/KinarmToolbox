@@ -1,5 +1,5 @@
 function Ax=plotPerTrialData(Ses,varargin)
-%% Plots a generic data vector, using different colors for each block defined in Task
+%% Plots a generic data vector given in input, using different colors and modalities for each block defined in Task
 % Ax = plotPerTrialData([Ses],ax,data,baseline)
 % Return a handle to the axis where the plot was made.
 % Input : ax, handle to existent axis, if not provided creates a new one
@@ -19,7 +19,6 @@ switch nargin
         figure('Color',[1 1 1]);
         ax=gca;
         pbaspect(ax,[3,2,1])
-        data=varargin{1};
         baseline='off';
         
     case 3
@@ -57,7 +56,7 @@ for k=1:1:length(BlockIndex)-1
         index=(BlockIndex(k)+1):BlockIndex(k+1);
         TPList=Ses.getTP(index);
         index=index(ismember(TPList,Ses.LinkedTask.TrialsType.IndexList{i}));
-        if all(ismember(Ses.LinkedTask.TrialsType.IndexList{i},Ses.LinkedTask.BlockTable.CATCH_TP_LIST{2}))
+        if Ses.LinkedTask.TrialsType.IsCatchTrial(i)
             LineType='*';
         else
             LineType='';

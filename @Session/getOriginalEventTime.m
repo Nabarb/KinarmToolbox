@@ -1,4 +1,4 @@
-function [T,S,L]=getEventTime(Ses,varargin)
+function [T,S,L]=getOriginalEventTime(Ses,varargin)
 %% Session class method. Return the times and correspondoing samples nuber of the
     
 

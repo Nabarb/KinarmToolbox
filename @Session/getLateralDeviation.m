@@ -42,8 +42,8 @@ if isempty(Ses.LateralDeviation)
         
         actTarget=Targets(i,2);
         strtTarget=Targets(i,1);
-        actTargetCoord=task.TargetTable(actTarget,:)./100;
-        strTtargetCoord=task.TargetTable(strtTarget,:)./100;
+        actTargetCoord=[task.TargetTable(actTarget,:).X_GLOBAL task.TargetTable(actTarget,:).Y_GLOBAL]./100;
+        strTtargetCoord=[task.TargetTable(strtTarget,:).X_GLOBAL task.TargetTable(strtTarget,:).Y_GLOBAL]./100;
         
         thetraj = Ses.getMovement(i);
         direz=(actTargetCoord-thetraj(1,:));

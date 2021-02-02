@@ -13,6 +13,10 @@ classdef Subject < handle
         
         Classification
         Sessions
+        
+    end
+    
+    properties(Transient)
         LinkedExperiment
     end
     
@@ -51,20 +55,23 @@ classdef Subject < handle
                 exp.addTask(c3d);
             end
 
-            NewSession=Session( c3d, exp.Tasks(index), Sub);
+            NewSession=KinarmToolbox.Session( c3d, exp.Tasks(index), Sub);
             Sub.Sessions = [Sub.Sessions NewSession];
         end % AddSession
         
-        function Struc=saveobj(Sub)
-            FN=fieldnames(Sub);
-            FN=FN((cellfun(@isempty,strfind(FN,'Linked'))));
-            for i=1:length(FN)
-                CurrField=Sub.(FN{i});
-                Struc.(FN{i})=CurrField;
-            end
-        end %save
         
     end
     
+    
+    methods 
+        function setLinkedExp(Sub,Exp)
+            if numel(Sub) == 1
+                Sub.LinkedExperiment = Exp;
+            else
+                setLinkedExp(Sub(1:end-1),Exp);
+                setLinkedExp(Sub(end),Exp);
+            end
+        end
+    end
 end
 

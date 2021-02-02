@@ -17,14 +17,18 @@ TrialsTypeIndexList = {1:6;
                        13:18;
                        19:24;
                        25:30;
-                       31:36};
+                       31:36;
+                       37:42;
+                       43:48};
                  
 TrialsTypeConditionName={'NullField';
                          'RandomField';
                          'DeterministicField';
                          'CatchTrial1';
                          'CatchTrial2';
-                         'CatchTrial3'
+                         'CatchTrial3';
+                         'CatchTrial4';
+                         'CatchTrial5'
                          };
                      
 TrialsTypeColor = {[25, 46, 91]./255;
@@ -33,7 +37,10 @@ TrialsTypeColor = {[25, 46, 91]./255;
                  [29, 101, 166]./255;
                  [114, 162, 192]./255;
                  [220, 47, 8]./255;
+                 [0.7490    0.0941    0.0941];
+                 [0.2157    0.4824    0.7490];
                 };
+            
 
 
 c3dFiles=dir('*c3d.mat');

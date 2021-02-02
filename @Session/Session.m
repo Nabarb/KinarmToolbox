@@ -167,7 +167,8 @@ classdef Session < handle
 %             BLmatrixNames=Ses.LinkedTask.BlockTable.Names;
 %             CTCol=ismember(BLmatrixNames,'CATCH_TP_LIST');
              TP=Ses.getTP;
-            CatchTrialsProtocol=unique(cat(1,Ses.LinkedTask.BlockTable.CATCH_TP_LIST{:}));
+             ctch=Ses.LinkedTask.TrialsType.IndexList(Ses.LinkedTask.TrialsType.IsCatchTrial);
+             CatchTrialsProtocol=unique([ctch{:}]);
             List=logical(ismember(TP,CatchTrialsProtocol));
             
             if strcmp(Ses.LinkedTask.MovType,'Both')
@@ -236,13 +237,13 @@ classdef Session < handle
         
         plotTrial(Ses,varargin)
         
-        PlotTargetAnimation(Ses)
+        Replay(Ses)
         
         [CenterOutIndex,OutCenterIndex,Traj]=getMovementIndexes(Ses,ind)
         
         plotLateralDeviation(Ses,ax)
                 
-        G=ViscDistribution(Ses,ind,c3d)
+        G=ForceDistribution(Ses,ind,c3d)
         
         function plotErrorForceScatter(Ses,ind)
             
@@ -337,14 +338,7 @@ classdef Session < handle
             
         end %plotPulseDeviation
         
-        function Struc=saveobj(Ses)
-            FN=fieldnames(Ses);
-            FN=FN((cellfun(@isempty,strfind(FN,'Linked'))));
-            for i=1:length(FN)
-                CurrField=Ses.(FN{i});
-                Struc.(FN{i})=CurrField;
-            end
-        end %save        
+             
     end
     
 end

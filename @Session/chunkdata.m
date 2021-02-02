@@ -6,7 +6,9 @@ function Data=chunkdata(Ses)
 ChunkedIntrestingData=Ses.IntrestingData; % Preinitialized conservativly. if some fields are skipped for some reason, they'll be the same as the unchunked version
 
 for j=1:length(Ses.IntrestingData)
-    [~,FalseStartEventSample]  = Ses.getEventTime('FALSE_START',j);
+    [~,tmp1]  = Ses.getEventTime('FALSE_START',j);
+    [~,tmp2] = Ses.getEventTime('START_OF_TRIAL',j);
+    FalseStartEventSample = [tmp1 tmp2];
     [EnterCenterEventTime,EnterCenterEventSample]  = Ses.getEventTime('ENTER_CENTER',j);
     if ~isempty(FalseStartEventSample)
         indx=find(EnterCenterEventSample>FalseStartEventSample(end),1);

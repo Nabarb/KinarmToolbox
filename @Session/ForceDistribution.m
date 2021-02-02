@@ -1,4 +1,4 @@
-function varargout=ViscDistribution(Ses,ind)
+function varargout=ForceDistribution(Ses,ind)
 
 if nargin<2
     ind='all';
@@ -11,7 +11,7 @@ end
 G=zeros(1,length(ind));
 j=1;
 for i=ind
-    G(j)=mean(Ses.IntrestingData.FX_from_VY(round(4*end/5)));
+    G(j)=mean(Ses.IntrestingData(i).FX_from_VY(round(4*end/5)));
     j=j+1;
 end
 [Y,x]=hist(G);

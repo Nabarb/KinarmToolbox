@@ -3,13 +3,13 @@ classdef Experiment < handle
     % is a handle class because there should be only one copy of any instance
     % of Experiment. To create a new instance call the constructor.
     
-    properties
-        Subjects;
-        Tasks;
+    properties (Access=public)
         Parameters;
         Filename;
-
+        Subjects;
+        Tasks; 
     end %properties
+    
     
     methods
         plotAnimation(Subject);
@@ -42,26 +42,17 @@ classdef Experiment < handle
         end %Experiment
         
         function addTask(Exp,c3d,MovType)
-            NewTask=Task(c3d,MovType);
+            NewTask=KinarmToolbox.Task(c3d,MovType);
             Exp.Tasks= [Exp.Tasks NewTask];
         end %addTask
         
-        function st = saveobj(Exp)
-            for i=1:length(Exp.Subjects)
-                st.Subjects(i)=save(Exp.Subjects(i));
-            end
-            for j=1:length(Exp.Tasks)
-                st.Tasks(j)=save(Exp.Tasks(j));
-            end
-            st.Parameters=Exp.Parameters;
-            st.Filename=Exp.Filename;
-            Exp.Tasks=[];
-            Exp.Subjects=[];
-            display('Experiment: Saving data');
+        function save(Exp)
+            fprintf(1,'Experiment: Saving data.');
+            save(Exp.Filename,'Exp');
         end %save
 
         function addSubject(Exp,c3d)
-            NewSubject=Subject( c3d,Exp);
+            NewSubject=KinarmToolbox.Subject( c3d,Exp);
             Exp.Subjects=[Exp.Subjects NewSubject];
         end %addSubject
         
@@ -224,20 +215,23 @@ classdef Experiment < handle
 
     methods(Static)
     
-        function Exp = loadobj(Str)
-          if isstruct(Str)
-             newEx=Experiment;
-             newEx.Filename=Str.Filename;
-             newEx.Parameters=Str.Parameters;
-             for i=1:length(Str.Subjects)
-                
-             end
-             for j=1:length(Str.Tasks)
-                
-             end
-
-             Exp = newEx;
-          end
+        function Exp = loadobj(Exp)
+%           if isstruct(Str)
+%              newEx=Experiment;
+%              newEx.Filename=Str.Filename;
+%              newEx.Parameters=Str.Parameters;
+%              for i=1:length(Str.Subjects)
+%                 
+%              end
+%              for j=1:length(Str.Tasks)
+%                 
+%              end
+% 
+%              Exp = newEx;
+%           end
+            Exp.Subjects.setLinkedExp(Exp);
+            Exp.Tasks.setLinkedExp(Exp);
+            
         end
     
     end % methods(Static)

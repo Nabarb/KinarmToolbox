@@ -22,6 +22,10 @@ classdef Task < handle
         ErrorLims;
     end
     
+    properties(Transient)
+        LinkedExperiment
+    end
+    
     methods
         function Tsk = Task(varargin)
             
@@ -180,14 +184,17 @@ classdef Task < handle
         
         Ax=plotPerTrialData(Tsk,varargin)
         
-        function Struc=saveobj(Tsk)
-            FN=fieldnames(Tsk);
-            FN=FN((cellfun(@isempty,strfind(FN,'Linked'))));
-            for i=1:length(FN)
-                CurrField=Tsk.(FN{i});
-                Struc.(FN{i})=CurrField;
+    end
+    
+    methods 
+        function setLinkedExp(Tsk,Exp)
+            if numel(Tsk) == 1
+                Tsk.LinkedExperiment = Exp;
+            else
+                setLinkedExp(Tsk(1:end-1),Exp);
+                setLinkedExp(Tsk(end),Exp);
             end
-        end %save
+        end
     end
     
 end
