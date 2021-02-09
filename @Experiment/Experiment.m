@@ -29,7 +29,7 @@ classdef Experiment < handle
                 index = SubjID == Exp.getSubjectList;
                 
                 %             Exp.Subjects(index).Sessions=[];
-                Exp.Subjects(index).AddSession(c3d,Exp);
+                Exp.Subjects(index).AddSession(c3d);
                 
                 Exp.Parameters=c3d(1).EXPERIMENT;
             elseif nargin==0
@@ -47,10 +47,10 @@ classdef Experiment < handle
         end %addTask
         
         function save(Exp)
-            fprintf(1,'Experiment: Saving data.');
-            save(Exp.Filename,'Exp');
+            save(Exp.Filename,'Exp', '-v7.3' );
+            fprintf(1,'Experiment: Saving data.\n');
         end %save
-
+        
         function addSubject(Exp,c3d)
             NewSubject=KinarmToolbox.Subject( c3d,Exp);
             Exp.Subjects=[Exp.Subjects NewSubject];

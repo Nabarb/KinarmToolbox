@@ -3,13 +3,16 @@ classdef Session < handle
     properties
         IntrestingData
         %c3d
-        LinkedTask
-        LinkedSubject
         PausesIndex
         Hand;
         LateralDeviation;
         
         
+    end
+    
+    properties(Transient = true)
+        LinkedTask
+        LinkedSubject
     end
     
     methods
@@ -338,6 +341,9 @@ classdef Session < handle
             
         end %plotPulseDeviation
         
+        function ses = saveobj(ses)
+            fprintf(1,'Session: Saving data.\n');
+        end
              
     end
     

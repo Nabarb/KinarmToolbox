@@ -22,7 +22,7 @@ classdef Task < handle
         ErrorLims;
     end
     
-    properties(Transient)
+    properties(Transient = true)
         LinkedExperiment
     end
     
@@ -195,6 +195,11 @@ classdef Task < handle
                 setLinkedExp(Tsk(end),Exp);
             end
         end
+        
+        function tsk = saveobj(tsk)
+            fprintf(1,'Task: Saving data.\n');
+        end
+        
     end
     
 end

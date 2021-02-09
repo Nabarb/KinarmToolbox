@@ -16,7 +16,7 @@ classdef Subject < handle
         
     end
     
-    properties(Transient)
+    properties(Transient = true)
         LinkedExperiment
     end
     
@@ -47,15 +47,15 @@ classdef Subject < handle
             
         end %Subject
         
-        function AddSession(Sub, c3d, exp)
+        function AddSession(Sub, c3d)
             taskID=c3d(1).EXPERIMENT.TASK_PROTOCOL_CODE;
-            index = taskID == exp.getTaskList;
+            index = taskID == Sub.LinkedExperiment.getTaskList;
 
-            if ~ismember(taskID,exp.getTaskList)
+            if ~ismember(taskID,Sub.LinkedExperiment.getTaskList)
                 exp.addTask(c3d);
             end
 
-            NewSession=KinarmToolbox.Session( c3d, exp.Tasks(index), Sub);
+            NewSession=KinarmToolbox.Session( c3d, Sub.LinkedExperiment.Tasks(index), Sub);
             Sub.Sessions = [Sub.Sessions NewSession];
         end % AddSession
         
@@ -71,6 +71,10 @@ classdef Subject < handle
                 setLinkedExp(Sub(1:end-1),Exp);
                 setLinkedExp(Sub(end),Exp);
             end
+        end
+        
+        function sub = saveobj(sub)
+            fprintf(1,'Subject: Saving data.\n');
         end
     end
 end
